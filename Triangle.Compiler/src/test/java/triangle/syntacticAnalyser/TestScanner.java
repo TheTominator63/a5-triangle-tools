@@ -14,7 +14,7 @@ import triangle.syntacticAnalyzer.Parser;
 import triangle.syntacticAnalyzer.Scanner;
 import triangle.syntacticAnalyzer.SourceFile;
 
-public class TestScanner {
+public class  TestScanner {
 	
 	/* some individual unit tests for helper methods in Scanner */
 
