@@ -104,7 +104,6 @@ public class Compiler {
 				theAST.visit(new ConstantFolder());
 			}
 
-			showTreeAfter = true;
 			
 			if (reporter.getNumErrors() == 0) {
 				System.out.println("Code Generation ...");
@@ -141,7 +140,7 @@ public class Compiler {
 
 		String sourceName = args[0];
 		
-		var compiledOK = compileProgram(sourceName, objectName, showTree, false);
+		var compiledOK = compileProgram(sourceName, objectName, showTree, showTreeAfter);
 
 		if (!showTree) {
 			System.exit(compiledOK ? 0 : 1);
@@ -159,5 +158,10 @@ public class Compiler {
 				folding = true;
 			}
 		}
+	}
+
+	//Method to give the option to show the tree after folding is done.
+	protected static void showTreeAfter() {
+		showTreeAfter = true;
 	}
 }
