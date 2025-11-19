@@ -18,6 +18,8 @@
 
 package triangle;
 
+import com.sampullara.cli.Args;
+import com.sampullara.cli.Argument;
 import triangle.abstractSyntaxTrees.Program;
 import triangle.codeGenerator.Emitter;
 import triangle.codeGenerator.Encoder;
@@ -33,11 +35,15 @@ import triangle.treeDrawer.Drawer;
  */
 public class Compiler {
 
-	/** The filename for the object program, normally obj.tam. */
+	@Argument(alias = "o", description = "The filename for the object program, normally obj.tam.", required = true)
 	static String objectName = "obj.tam";
-	
+	@Argument(alias = "s", description = "boolean to decide whether to show the tree", required = true)
 	static boolean showTree = false;
+	@Argument(alias = "f", description = "boolean to indicate whether folding is ongoing", required = true)
 	static boolean folding = false;
+	static boolean showTreeAfter = false;
+
+
 
 	private static Scanner scanner;
 	private static Parser parser;
@@ -97,6 +103,8 @@ public class Compiler {
 			if (folding) {
 				theAST.visit(new ConstantFolder());
 			}
+
+			showTreeAfter = true;
 			
 			if (reporter.getNumErrors() == 0) {
 				System.out.println("Code Generation ...");
@@ -122,12 +130,14 @@ public class Compiler {
 	 */
 	public static void main(String[] args) {
 
+		Compiler compiler = new Compiler();
+
 		if (args.length < 1) {
 			System.out.println("Usage: tc filename [-o=outputfilename] [tree] [folding]");
 			System.exit(1);
 		}
-		
-		parseArgs(args);
+
+		Args.parseOrExit(compiler, args);
 
 		String sourceName = args[0];
 		
