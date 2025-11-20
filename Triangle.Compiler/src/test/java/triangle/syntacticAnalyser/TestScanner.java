@@ -31,6 +31,7 @@ public class  TestScanner {
 		assertFalse(Scanner.isDigit(';'));
 		assertFalse(Scanner.isDigit('\n'));
 	}
+
 	
 	@Test
 	public void testIsOperator() {
@@ -76,6 +77,11 @@ public class  TestScanner {
 	@Test
 	public void testRepeatUntil() {
 		compileExpectSuccess("/repeatuntil.tri");
+	}
+
+	@Test
+	public void testDoubleOperator() {
+		compileExpectSuccess("/double.tri");
 	}
 	
 	

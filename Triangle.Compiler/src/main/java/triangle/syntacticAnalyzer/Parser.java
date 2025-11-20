@@ -290,12 +290,32 @@ public class Parser {
 				commandAST = new CallCommand(iAST, apsAST, commandPos);
 
 			} else {
-
 				Vname vAST = parseRestOfVname(iAST);
-				accept(Token.Kind.BECOMES);
-				Expression eAST = parseExpression();
-				finish(commandPos);
-				commandAST = new AssignCommand(vAST, eAST, commandPos);
+				if (currentToken.kind == Token.Kind.OPERATOR && currentToken.spelling.equals("**")) {
+					acceptIt();
+					// e.g. a** translates to an assignment a=a*2
+
+					// first, we need to make the integerliteral for the 2
+					IntegerLiteral il = new IntegerLiteral("2", commandPos);
+					// this gets wrapped in an IntegerExpression
+					IntegerExpression ie = new IntegerExpression(il, commandPos);
+					// the variable name gets wrapped in a VnameExpression
+					VnameExpression vne = new VnameExpression(vAST, commandPos);
+					// the operator will be a * (each operator is just defined by its spelling)
+					Operator op = new Operator("*", commandPos);
+					// now we assemble the expressions into a BinaryExpression for the a + 1
+					Expression eAST = new BinaryExpression(vne, op, ie, commandPos);
+					// this sets the last line of the command for debugging purposes
+					finish(commandPos);
+					// we need to make an assignment, with a binary expression on the right
+					commandAST = new AssignCommand(vAST, eAST, commandPos);
+
+				} else {
+					accept(Token.Kind.BECOMES);
+					Expression eAST = parseExpression();
+					finish(commandPos);
+					commandAST = new AssignCommand(vAST, eAST, commandPos);
+				}
 			}
 		}
 			break;
