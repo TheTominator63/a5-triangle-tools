@@ -88,6 +88,11 @@ public class  TestScanner {
 	public void testCurlyBrackets() {
 		compileExpectSuccess("/while-curly.tri");
 	}
+
+	@Test
+	public void testLoopWhile() {
+		compileExpectSuccess("/loop-while.tri");
+	}
 	
 	
 	

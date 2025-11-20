@@ -44,6 +44,7 @@ import triangle.abstractSyntaxTrees.commands.LetCommand;
 import triangle.abstractSyntaxTrees.commands.SequentialCommand;
 import triangle.abstractSyntaxTrees.commands.WhileCommand;
 import triangle.abstractSyntaxTrees.commands.RepeatCommand;
+import triangle.abstractSyntaxTrees.commands.LoopCommand;
 import triangle.abstractSyntaxTrees.declarations.ConstDeclaration;
 import triangle.abstractSyntaxTrees.declarations.Declaration;
 import triangle.abstractSyntaxTrees.declarations.FuncDeclaration;
@@ -295,7 +296,7 @@ public class Parser {
 					acceptIt();
 					// e.g. a** translates to an assignment a=a*2
 
-					// first, we need to make the integerliteral for the 2
+					// first, we need to make the integerLiteral for the 2
 					IntegerLiteral il = new IntegerLiteral("2", commandPos);
 					// this gets wrapped in an IntegerExpression
 					IntegerExpression ie = new IntegerExpression(il, commandPos);
@@ -373,6 +374,18 @@ public class Parser {
             commandAST = new RepeatCommand(eAST, cAST, commandPos);
         }
             break;
+
+		case LOOP: {
+			acceptIt();
+			Command cAST1 = parseSingleCommand();
+			accept(Token.Kind.WHILE);
+			Expression eAST = parseExpression();
+			accept(Token.Kind.DO);
+			Command cAST2 = parseSingleCommand();
+			finish(commandPos);
+			commandAST = new LoopCommand(eAST, cAST1, cAST2, commandPos);
+		}
+			break;
 
 		case SEMICOLON:
 		case END:
