@@ -83,6 +83,11 @@ public class  TestScanner {
 	public void testDoubleOperator() {
 		compileExpectSuccess("/double.tri");
 	}
+
+	@Test
+	public void testCurlyBrackets() {
+		compileExpectSuccess("/while-curly.tri");
+	}
 	
 	
 	
